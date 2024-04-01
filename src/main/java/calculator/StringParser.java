@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 public class StringParser {
     private static final String DEFAULT_DELIMITER = ",:";
-    private static final Pattern PATTERN = Pattern.compile("(//(.+)\\n)?(.*)");
-    public static final int GROUP_DELIMITER = 2;
+    private static final Pattern PARSER_PATTERN = Pattern.compile("(//(.+)\\n)?(.*)");
+    public static final int GROUP_CUSTOM_DELIMITER = 2;
     public static final int GROUP_STRING = 3;
 
     private StringParser() {
@@ -18,24 +18,24 @@ public class StringParser {
     }
 
     public static List<Integer> parse(String numberSequence) {
-        Matcher matcher = PATTERN.matcher(numberSequence);
+        Matcher matcher = PARSER_PATTERN.matcher(numberSequence);
         String delimiters = generateDelimiter(matcher);
         String numbers = matcher.group(GROUP_STRING);
 
         return Arrays.stream(numbers.split(delimiters))
-                .map(StringParser::parseElement)
+                .map(StringParser::parseInteger)
                 .collect(Collectors.toList());
     }
 
     private static String generateDelimiter(Matcher matcher) {
-        if (matcher.find() && Objects.nonNull(matcher.group(GROUP_DELIMITER))) {
-            return "[" + DEFAULT_DELIMITER + matcher.group(GROUP_DELIMITER) + "]";
+        if (matcher.find() && Objects.nonNull(matcher.group(GROUP_CUSTOM_DELIMITER))) {
+            return "[" + DEFAULT_DELIMITER + matcher.group(GROUP_CUSTOM_DELIMITER) + "]";
         }
 
         return "[" + DEFAULT_DELIMITER + "]";
     }
 
-    private static Integer parseElement(String element) {
+    private static Integer parseInteger(String element) {
         try {
             int number = Integer.parseInt(element);
             validateRange(number);
