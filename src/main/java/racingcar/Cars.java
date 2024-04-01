@@ -1,6 +1,7 @@
 package racingcar;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,11 +17,13 @@ public class Cars {
 
     public Cars(List<String> carNames) {
         validateNotDuplicated(carNames);
-        this.cars = carNames.stream().map(Car::new).collect(Collectors.toList());
+        this.cars = carNames.stream()
+                .map(Car::new)
+                .collect(Collectors.toList());
     }
 
     private void validateNotDuplicated(List<String> carNames) {
-        if (carNames.size() != carNames.stream().distinct().count()) {
+        if (carNames.size() != new HashSet<>(carNames).size()) {
             throw new IllegalArgumentException("중복된 자동차 이름이 존재합니다.");
         }
     }

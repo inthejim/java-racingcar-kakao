@@ -1,5 +1,7 @@
 package racingcar;
 
+import calculator.NumberCalculator;
+
 public class RacingCarGame {
 
     private static final InputView inputView = new InputView();
@@ -18,9 +20,10 @@ public class RacingCarGame {
 
     private static void playGame(int tryCount, Cars cars) {
         outputView.printResultGuide();
+        NumberGenerator numberGenerator = new NumberGenerator();
 
         for (int i = 0; i < tryCount; i++) {
-            cars.moveAll(new NumberGenerator());
+            cars.moveAll(numberGenerator);
             outputView.printResult(cars);
         }
 

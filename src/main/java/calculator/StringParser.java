@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 public class StringParser {
     private static final String DEFAULT_DELIMITER = ",:";
     private static final Pattern PATTERN = Pattern.compile("(//(.+)\\n)?(.*)");
+    public static final int GROUP_DELIMITER = 2;
+    public static final int GROUP_STRING = 3;
 
     private StringParser() {
         throw new IllegalStateException("utility 입니다.");
@@ -18,7 +20,7 @@ public class StringParser {
     public static List<Integer> parse(String numberSequence) {
         Matcher matcher = PATTERN.matcher(numberSequence);
         String delimiters = generateDelimiter(matcher);
-        String numbers = matcher.group(3);
+        String numbers = matcher.group(GROUP_STRING);
 
         return Arrays.stream(numbers.split(delimiters))
                 .map(StringParser::parseElement)
@@ -26,15 +28,11 @@ public class StringParser {
     }
 
     private static String generateDelimiter(Matcher matcher) {
-        StringBuilder sb = new StringBuilder(DEFAULT_DELIMITER);
-
-        if (matcher.find() && Objects.nonNull(matcher.group(2))) {
-            sb.append(matcher.group(2));
+        if (matcher.find() && Objects.nonNull(matcher.group(GROUP_DELIMITER))) {
+            return "[" + DEFAULT_DELIMITER + matcher.group(GROUP_DELIMITER) + "]";
         }
 
-        return new StringBuilder("[]")
-                .insert(1, sb)
-                .toString();
+        return "[" + DEFAULT_DELIMITER + "]";
     }
 
     private static Integer parseElement(String element) {
