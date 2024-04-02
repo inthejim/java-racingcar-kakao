@@ -1,6 +1,7 @@
-package racingcar;
+package racingcar.domain;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RacingcarGame {
 
@@ -15,7 +16,7 @@ public class RacingcarGame {
     }
 
     private void validateInput(String names, int tryCount) {
-        if(tryCount<=0){
+        if (tryCount <= 0) {
             throw new IllegalArgumentException("시도 횟수는 양수이어야 합니다.");
         }
     }
@@ -26,6 +27,7 @@ public class RacingcarGame {
 
     public void race() {
         cars.moveAll(numberGenerator);
+        tryCount--;
     }
 
     public Cars getCars() {
@@ -33,6 +35,9 @@ public class RacingcarGame {
     }
 
     public List<String> pickWinners() {
-        return this.cars.pickWinners();
+        return cars.pickWinners()
+                .stream()
+                .map(CarName::getName)
+                .collect(Collectors.toList());
     }
 }
