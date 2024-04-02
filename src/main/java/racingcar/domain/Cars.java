@@ -1,4 +1,4 @@
-package racingcar;
+package racingcar.domain;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,9 +28,9 @@ public class Cars {
         }
     }
 
-    public List<String> getCarNames() {
+    public List<CarName> getCarNames() {
         return cars.stream()
-                .map(Car::getName)
+                .map(Car::getCarName)
                 .collect(Collectors.toList());
     }
 
@@ -46,12 +46,12 @@ public class Cars {
                 .collect(Collectors.toList());
     }
 
-    public List<String> pickWinners() {
+    public List<CarName> pickWinners() {
         int maxPosition = getMaxPosition();
 
         return cars.stream()
                 .filter(car -> car.isWinner(maxPosition))
-                .map(Car::getName)
+                .map(Car::getCarName)
                 .collect(Collectors.toList());
     }
 
